@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eu te amo </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo para o fundo escuro com brilhos roxos */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to right, #3c3c3c, #1a1a1a, #3c3c3c);
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow-y: auto;
+        }
+
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+            margin: 20px 0;
+            position: relative;
+            animation: fadeIn 2s ease;
+        }
+
+        /* Capa inicial */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-family: 'Lobster', cursive;
+            font-size: 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Brilhos roxos nas laterais */
+        .container::before, .container::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(128, 0, 128, 0.5);
+            animation: shimmer 4s infinite alternate;
+        }
+
+        .container::before {
+            top: 15%;
+            left: -20px;
+        }
+
+        .container::after {
+            bottom: 15%;
+            right: -20px;
+        }
+
+        @keyframes shimmer {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilo do player de música */
+        .music-player {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #333;
+            border-radius: 15px;
+            padding: 15px;
+            width: 100%;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+        }
+
+        .album-cover {
+            width: 150px;
+            height: 150px;
+            background-image: url('Fotos/Arthur\ Diniz.jpg');
+            background-size: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin-bottom: 15px;
+        }
+
+        .track-info {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .track-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .track-artist {
+            font-size: 0.9rem;
+            color: #bbb;
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .current-time, .total-duration {
+            font-size: 0.8rem;
+            color: #bbb;
+        }
+
+        .progress-bar-container {
+            flex-grow: 1;
+            height: 6px;
+            background-color: #555;
+            border-radius: 3px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: #1db954;
+            transition: width 0.1s linear;
+        }
+
+        .music-controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .control-button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .control-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Estilo do carrossel de imagens */
+        .carousel {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 300px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 1px solid #800080;
+            background: url('Fotos/Fundo.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease;
+        }
+
+        .carousel img.active {
+            opacity: 1;
+        }
+
+        .carousel img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Estilo do título "Eu Te Amo" */
+        h2 {
+            font-size: 2.5rem;
+            color: #ff4d4d;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 77, 77, 0.8), 0 0 20px rgba(255, 77, 77, 0.5);
+            font-family: 'Lobster', cursive;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(255, 77, 77, 0.8), 0 0 20px rgba(255, 77, 77, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(255, 77, 77, 1), 0 0 30px rgba(255, 77, 77, 0.7); }
+        }
+
+        /* Estilo do texto de declaração */
+        .declaracao {
+            font-size: 1rem;
+            padding: 10px;
+            margin-bottom: 20px;
+            animation: fadeInText 3s ease-in-out;
+            text-align: justify;
+        }
+
+        @keyframes fadeInText {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Estilo para "Juntos há" com fonte Lobster e espaçamento */
+        .timer div:first-child {
+            font-family: 'Lobster', cursive;
+            font-size: 1.5rem;
+            margin-top: 30px;
+        }
+
+        /* Estilo do contador de tempo */
+        .timer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .time-box {
+            background-color: rgba(128, 0, 128, 0.2);
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 60px;
+            margin-top: 5px;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .time-label {
+            font-size: 0.75rem;
+            margin-top: 2px;
+        }
+
+        /* Ajustes adicionais para telas menores */
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 2rem;
+            }
+
+            .declaracao {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            .time-box {
+                min-width: 50px;
+                padding: 6px;
+            }
+
+            .time-box span {
+                font-size: 1rem;
+            }
+
+            .time-label {
+                font-size: 0.7rem;
+            }
+
+            .music-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .carousel {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Capa inicial -->
+<div class="overlay" onclick="startMusic()">
+    <p>Num final de noite de dezembro🎶</p>
+</div>
+
+<div class="container">
+    <!-- Carrossel de imagens -->
+    <div class="carousel" id="carousel">
+        <img src="Fotos/Foto 1.jpg" class="active" alt="Imagem 1 de Vinicius e Duda">
+        <img src="Fotos/Foto 2.jpg" alt="Imagem 2 de Vinicius e Duda">
+        <img src="Fotos/Foto 3.jpg" alt="Imagem 3 de Vinicius e Duda">
+        <img src="Fotos/Foto 4.jpg" alt="Imagem 4 de Vinicius e Duda">
+        <img src="Fotos/Foto 5.jpg" alt="Imagem 5 de Vinicius e Duda">
+        <img src="Fotos/Foto 6.jpg" alt="Imagem 6 de Vinicius e Duda">
+        <img src="Fotos/Foto 7.jpg" alt="Imagem 7 de Vinicius e Duda">
+    </div>
+
+    <!-- Texto de Vinicius & Duda -->
+    <h2>❤️</h2>
+
+    <!-- Declaração de amor -->
+    <p class="declaracao">
+        Sou imensamente grato por ter você ao meu lado. Você é muito especial para mim, e eu amo cada detalhe seu: o seu cheiro, o seu cabelo, o seu sorriso... Mas, acima de tudo, amo o simples fato de estar com você.
+
+Você chegou em um momento da minha vida em que eu não estava aberto a nada, muito menos a um namoro. Não imaginava me apaixonar novamente, muito menos tão cedo. Mas aí você apareceu, de uma forma tão inesperada e incrível, e tudo mudou. Encontrar você foi como um sopro de ar fresco, algo que eu realmente não esperava, mas que se tornou a melhor coisa que poderia acontecer comigo.
+
+Por isso, quero te agradecer. Agradecer por ter cruzado o meu caminho, por ter me mostrado o quanto estar com alguém especial pode transformar tudo. Sem você, talvez eu tivesse tomado caminhos bem diferentes (e, quem sabe, feito muita besteira por aí kkk).
+
+Você é muito importante para mim, e quero que saiba que estarei sempre aqui para tudo o que precisar. Também quero pedir desculpas pelas vezes em que sou bruto ou grosseiro. Infelizmente, às vezes falo sem pensar, mas prometo me esforçar para melhorar, para que você nunca se magoe com isso.
+
+Eu te amo. Amo quem você é, o que representamos juntos e a vida que estamos construindo. E quero amar você por toda a minha vida.
+
+Feliz nosso dia! ❤️
+    </p>
+
+    <!-- Contador de tempo -->
+    <div class="timer" id="timer">
+        <div>Juntos há</div>
+        <div class="time-box">
+            <span id="days">00</span>
+            <div class="time-label">Dias</div>
+        </div>
+        <div class="time-box">
+            <span id="hours">00</span>
+            <div class="time-label">Horas</div>
+        </div>
+        <div class="time-box">
+            <span id="minutes">00</span>
+            <div class="time-label">Minutos</div>
+        </div>
+        <div class="time-box">
+            <span id="seconds">00</span>
+            <div class="time-label">Segundos</div>
+        </div>
+    </div>
+
+    <!-- Player de música -->
+    <div class="music-player">
+        <div class="album-cover" alt="Capa do álbum de Arthur Diniz"></div>
+        <div class="track-info">
+            <div class="track-title">Dezembro</div>
+            <div class="track-artist">Arthur Diniz</div>
+        </div>
+        <div class="progress-container">
+            <span class="current-time" id="currentTime">0:00</span>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <span class="total-duration" id="totalDuration">0:00</span>
+        </div>
+        <div class="music-controls">
+            <button class="control-button" onclick="skipBackward()" aria-label="Rewind 10 seconds">
+                <i class="fas fa-backward"></i>
+            </button>
+            <button class="control-button" onclick="toggleMusic()" id="playPauseButton" aria-label="Play/Pause">
+                <i class="fas fa-play"></i>
+            </button>
+            <button class="control-button" onclick="skipForward()" aria-label="Forward 10 seconds">
+                <i class="fas fa-forward"></i>
+            </button>
+        </div>
+        <audio id="audioPlayer" src="Áudio/Musica.mp3" type="audio/mpeg"></audio>
+    </div>
+</div>
+
+<!-- Script para o efeito de fogos de artifício -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.min.js"></script>
+
+<script>
+    const startDate = new Date("2024-08-13T00:00:00");
+
+    function updateTimer() {
+        const now = new Date();
+        const diff = now - startDate;
+
+        if (diff > 0) { 
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+        } else {
+            document.getElementById("days").innerText = "00";
+            document.getElementById("hours").innerText = "00";
+            document.getElementById("minutes").innerText = "00";
+            document.getElementById("seconds").innerText = "00";
+        }
+    }
+
+    setInterval(updateTimer, 1000);
+
+    function startMusic() {
+        const audio = document.getElementById("audioPlayer");
+        audio.play();
+        document.querySelector(".overlay").style.display = "none";
+        
+        // Efeito de fogos de artifício
+        confetti({
+            particleCount: 200,
+            spread: 90,
+            origin: { y: 0.6 }
+        });
+    }
+
+    function toggleMusic() {
+        const audio = document.getElementById("audioPlayer");
+        const playPauseButton = document.getElementById("playPauseButton");
+        const icon = playPauseButton.querySelector("i");
+
+        if (audio.paused) {
+            audio.play();
+            icon.classList.replace("fa-play", "fa-pause");
+        } else {
+            audio.pause();
+            icon.classList.replace("fa-pause", "fa-play");
+        }
+    }
+
+    function skipForward() {
+        const audio = document.getElementById("audioPlayer");
+        audio.currentTime = Math.min(audio.currentTime + 10, audio.duration);
+    }
+
+    function skipBackward() {
+        const audio = document.getElementById("audioPlayer");
+        audio.currentTime = Math.max(audio.currentTime - 10, 0);
+    }
+
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs.toString().padStart(2, "0")}`;
+    }
+
+    const audio = document.getElementById("audioPlayer");
+    const progressBar = document.getElementById("progressBar");
+    const currentTimeDisplay = document.getElementById("currentTime");
+    const totalDurationDisplay = document.getElementById("totalDuration");
+
+    audio.addEventListener("loadedmetadata", () => {
+        totalDurationDisplay.textContent = formatTime(audio.duration);
+    });
+
+    audio.addEventListener("timeupdate", () => {
+        currentTimeDisplay.textContent = formatTime(audio.currentTime);
+        const progress = (audio.currentTime / audio.duration) * 100;
+        progressBar.style.width = progress + "%";
+    });
+
+    audio.addEventListener("ended", () => {
+        const icon = playPauseButton.querySelector("i");
+        icon.classList.replace("fa-pause", "fa-play");
+        progressBar.style.width = "0%";
+        currentTimeDisplay.textContent = "0:00";
+    });
+
+    let currentImageIndex = 0;
+    const images = document.querySelectorAll("#carousel img");
+
+    function showNextImage() {
+        images[currentImageIndex].classList.remove("active");
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        images[currentImageIndex].classList.add("active");
+    }
+
+    setInterval(showNextImage, 3000);
+</script>
+
+</body>
+</html>
